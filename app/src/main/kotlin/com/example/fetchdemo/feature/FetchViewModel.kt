@@ -10,8 +10,10 @@ import com.example.fetchdemo.util.asResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -30,11 +32,19 @@ class FetchViewModel @Inject constructor(
       initialValue = FetchUiState.Loading,
     )
 
+  private val _uiEvent = MutableSharedFlow<FetchUiEvent>(extraBufferCapacity = 20)
+  val uiEvent = _uiEvent.asSharedFlow()
+
   fun fetchNetwork() {
     viewModelScope.launch(dispatchers.io) {
       fetchRepository.getFetchData()
         .onSuccess { Timber.d("fetchNetwork - success") }
-        .onFailure { Timber.e(it, "fetchNetwork - error: ${it.message}") }
+        .onFailure {
+          Timber.e(it, "fetchNetwork - error: ${it.message}")
+          if (!_uiEvent.tryEmit(ShowSnackbarMessage("A network error occurred."))) {
+            error("Buffer overflow error.")
+          }
+        }
     }
   }
 
@@ -45,7 +55,11 @@ class FetchViewModel @Inject constructor(
         FetchResult.Loading -> FetchUiState.Loading
         is FetchResult.Error -> FetchUiState.Error(result.exception)
         is FetchResult.Success -> {
-          FetchUiState.Success(result.data.groupBy { it.listId })
+          if (result.data.isEmpty()) {
+            FetchUiState.Empty
+          } else {
+            FetchUiState.Success(result.data.groupBy { it.listId })
+          }
         }
       }
     }
@@ -53,6 +67,10 @@ class FetchViewModel @Inject constructor(
 
 sealed class FetchUiState {
   data object Loading : FetchUiState()
+  data object Empty : FetchUiState()
   data class Success(val fetchDataMap: Map<Long, List<FetchData>>) : FetchUiState()
   data class Error(val error: Throwable) : FetchUiState()
 }
+
+sealed interface FetchUiEvent
+data class ShowSnackbarMessage(val message: String) : FetchUiEvent

@@ -15,6 +15,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -46,13 +48,25 @@ fun FetchScreen(
   viewModel: FetchViewModel = hiltViewModel(),
 ) {
   val fetchUiState: FetchUiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val snackbarHostState = remember { SnackbarHostState() }
   val hazeState = remember { HazeState() }
 
   LaunchedEffect(viewModel) {
     viewModel.fetchNetwork()
   }
 
+  LaunchedEffect(viewModel) {
+    viewModel.uiEvent.collect { event ->
+      when (event) {
+        is ShowSnackbarMessage -> snackbarHostState.showSnackbar(event.message)
+      }
+    }
+  }
+
   Scaffold(
+    snackbarHost = {
+      SnackbarHost(hostState = snackbarHostState)
+    },
     topBar = {
       TopAppBar(
         title = {
@@ -89,6 +103,12 @@ private fun FetchList(
         modifier = modifier.fillMaxWidth(),
       )
     }
+    FetchUiState.Empty -> {
+      Text(
+        text = "No items were loaded.",
+        modifier = modifier.padding(16.dp),
+      )
+    }
     is FetchUiState.Error -> {
       Text(
         text = "An error occurred. Please try again.",
@@ -101,6 +121,7 @@ private fun FetchList(
         modifier = modifier.fillMaxSize(),
       ) {
         fetchUiState.fetchDataMap.forEach { (key, list) ->
+          // Using `list_$key` here because the items key could have an id matching a listId.
           stickyHeader(key = "list_$key") {
             Text(
               text = "List ID: $key",
@@ -176,6 +197,28 @@ private fun FetchListErrorPreview() {
     ) { innerPadding ->
       FetchList(
         fetchUiState = FetchUiState.Error(RuntimeException("Boom!")),
+        hazeState = hazeState,
+        modifier = Modifier.padding(innerPadding),
+      )
+    }
+  }
+}
+
+@Preview
+@Composable
+private fun FetchListEmptyPreview() {
+  FetchDemoTheme {
+    val hazeState = remember { HazeState() }
+    Scaffold(
+      topBar = {
+        TopAppBar(
+          title = { Text("Fetch Demo", color = Color.White) },
+          colors = TopAppBarDefaults.topAppBarColors(PurpleHaze),
+        )
+      },
+    ) { innerPadding ->
+      FetchList(
+        fetchUiState = FetchUiState.Empty,
         hazeState = hazeState,
         modifier = Modifier.padding(innerPadding),
       )
