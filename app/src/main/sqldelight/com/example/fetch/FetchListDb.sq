@@ -1,0 +1,29 @@
+CREATE TABLE FetchListDb (
+  id INTEGER NOT NULL PRIMARY KEY,
+  list_id INTEGER NOT NULL,
+  name TEXT,
+
+  UNIQUE(id, list_id) ON CONFLICT REPLACE
+);
+
+upsertFetchItem {
+  UPDATE FetchListDb
+  SET name = :name
+  WHERE id = :id AND list_id = :list_id;
+
+  INSERT OR IGNORE INTO FetchListDb(
+    id,
+    list_id,
+    name
+  )
+  VALUES(
+    :id,
+    :list_id,
+    :name
+  );
+}
+
+selectSortedList:
+SELECT * FROM FetchListDb
+WHERE name IS NOT NULL AND trim(name) != ''
+ORDER BY list_id ASC, name ASC;

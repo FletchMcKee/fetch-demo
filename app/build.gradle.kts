@@ -4,6 +4,8 @@ plugins {
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.hilt)
   alias(libs.plugins.ksp)
+  alias(libs.plugins.kotlinx.serialization)
+  alias(libs.plugins.sqldelight)
 }
 
 android {
@@ -65,8 +67,23 @@ dependencies {
   implementation(libs.androidx.ui.tooling.preview)
   implementation(libs.androidx.material3)
 
+  // Logging
+  implementation(libs.timber)
+
+  // DI
   implementation(libs.hilt.android)
+  implementation(libs.hilt.navigation.compose)
   ksp(libs.hilt.android.compiler)
+
+  // Network
+  implementation(libs.retrofit.client)
+  implementation(libs.retrofit.converter.kotlinx.serialization)
+  implementation(libs.okhttp.client)
+  implementation(libs.kotlinx.serialization)
+
+  // Database
+  implementation(libs.sqldelight)
+  implementation(libs.sqldelight.coroutines)
 
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
@@ -75,4 +92,12 @@ dependencies {
   androidTestImplementation(libs.androidx.ui.test.junit4)
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+sqldelight {
+  databases {
+    create("Database") {
+      packageName.set("com.example.fetch")
+    }
+  }
 }
