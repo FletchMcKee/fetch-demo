@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 
 suspend fun <T> suspendRunCatching(block: suspend () -> T): Result<T> = try {
-    Result.success(block())
+  Result.success(block())
 } catch (cancellationException: CancellationException) {
   throw cancellationException
 } catch (exception: Exception) {

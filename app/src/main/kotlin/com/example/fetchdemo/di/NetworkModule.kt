@@ -1,8 +1,8 @@
 package com.example.fetchdemo.di
 
 import com.example.fetch.Database
-import com.example.fetchdemo.data.FetchApi
 import com.example.fetchdemo.data.DispatcherProvider
+import com.example.fetchdemo.data.FetchApi
 import com.example.fetchdemo.data.FetchRepository
 import dagger.Module
 import dagger.Provides
@@ -25,7 +25,7 @@ object NetworkModule {
   fun provideRetrofit(): Retrofit = Retrofit.Builder()
     .baseUrl("https://fetch-hiring.s3.amazonaws.com/")
     .addConverterFactory(
-      Json.asConverterFactory("application/json; charset=UTF8".toMediaType())
+      Json.asConverterFactory("application/json; charset=UTF8".toMediaType()),
     )
     .build()
 
@@ -47,7 +47,7 @@ object NetworkModule {
   fun provideFetchRepository(
     database: Database,
     dispatchers: DispatcherProvider,
-    fetchApi: FetchApi
+    fetchApi: FetchApi,
   ): FetchRepository = FetchRepository(
     database = database,
     dispatchers = dispatchers,

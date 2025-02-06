@@ -1,6 +1,5 @@
 package com.example.fetchdemo.data
 
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 
@@ -14,5 +13,3 @@ interface FetchApi {
   @GET("hiring.json")
   suspend fun getFetchData(): List<FetchData>
 }
-
-

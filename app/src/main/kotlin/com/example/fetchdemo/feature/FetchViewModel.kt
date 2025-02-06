@@ -12,7 +12,6 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -57,5 +56,3 @@ sealed class FetchUiState {
   data class Success(val fetchDataMap: Map<Long, List<FetchData>>) : FetchUiState()
   data class Error(val error: Throwable) : FetchUiState()
 }
-
-

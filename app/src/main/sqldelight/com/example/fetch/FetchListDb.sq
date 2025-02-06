@@ -23,6 +23,7 @@ upsertFetchItem {
   );
 }
 
+-- Sorting by name will put 29 in front of 3, can adjust if needed.
 selectSortedList:
 SELECT * FROM FetchListDb
 WHERE name IS NOT NULL AND trim(name) != ''

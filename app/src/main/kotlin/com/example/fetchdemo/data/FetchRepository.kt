@@ -5,7 +5,6 @@ import app.cash.sqldelight.coroutines.mapToList
 import com.example.fetch.Database
 import com.example.fetchdemo.util.suspendRunCatching
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.flow.Flow
 
 class FetchRepository @Inject constructor(
@@ -20,8 +19,7 @@ class FetchRepository @Inject constructor(
     upsertFetchData(fetchList)
   }
 
-  override fun selectFetchData(
-  ): Flow<List<FetchData>> = fetchListDbQueries
+  override fun selectFetchData(): Flow<List<FetchData>> = fetchListDbQueries
     .selectSortedList(mapper = ::FetchData)
     .asFlow()
     .mapToList(dispatchers.io)
