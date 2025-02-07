@@ -85,14 +85,22 @@ dependencies {
   implementation(libs.kotlinx.serialization)
 
   // Database
-  implementation(libs.sqldelight)
+  implementation(libs.sqldelight.android.driver)
   implementation(libs.sqldelight.coroutines)
 
   testImplementation(libs.junit)
+  testImplementation(libs.turbine)
+  testImplementation(libs.sqldelight.sqlite.driver)
+  testImplementation(libs.mockwebserver)
+  testImplementation(libs.coroutines.test)
+  testImplementation(libs.assertk)
+  testImplementation(libs.mockk)
+
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(platform(libs.androidx.compose.bom))
   androidTestImplementation(libs.androidx.ui.test.junit4)
+
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
 }
