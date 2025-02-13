@@ -6,6 +6,7 @@ plugins {
   alias(libs.plugins.ksp)
   alias(libs.plugins.kotlinx.serialization)
   alias(libs.plugins.sqldelight)
+  alias(libs.plugins.secrets)
 }
 
 android {
@@ -56,6 +57,10 @@ android {
     compose = true
     buildConfig = true
   }
+}
+
+secrets {
+  defaultPropertiesFileName = "secrets.defaults.properties"
 }
 
 dependencies {

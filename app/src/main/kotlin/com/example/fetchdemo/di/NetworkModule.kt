@@ -1,6 +1,7 @@
 package com.example.fetchdemo.di
 
 import com.example.fetch.Database
+import com.example.fetchdemo.BuildConfig
 import com.example.fetchdemo.data.DispatcherProvider
 import com.example.fetchdemo.data.FetchApi
 import com.example.fetchdemo.data.FetchRepository
@@ -23,7 +24,7 @@ object NetworkModule {
   @Provides
   @Singleton
   fun provideRetrofit(): Retrofit = Retrofit.Builder()
-    .baseUrl("https://fetch-hiring.s3.amazonaws.com/")
+    .baseUrl(BuildConfig.BASE_URL)
     .addConverterFactory(
       Json.asConverterFactory("application/json; charset=UTF8".toMediaType()),
     )

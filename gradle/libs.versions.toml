@@ -36,6 +36,8 @@ timber = "5.0.1"
 turbine = "1.2.0"
 coroutinesTest = "1.9.0"
 
+secrets = "2.0.1"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
@@ -94,4 +96,5 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
+secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
 
