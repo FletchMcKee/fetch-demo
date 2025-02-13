@@ -22,7 +22,7 @@ class DatabaseTestRule : TestRule {
   lateinit var fetchListDbQueriesSpy: FetchListDbQueries
   val server = MockWebServer()
 
-  val retrofit = Retrofit.Builder()
+  val retrofit: Retrofit = Retrofit.Builder()
     .baseUrl(server.url("/"))
     .addConverterFactory(
       Json.asConverterFactory("application/json; charset=UTF8".toMediaType()),

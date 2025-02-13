@@ -53,7 +53,7 @@ class FetchRepositoryTest {
   }
 
   @Test
-  fun `getFetchData - valid response returns isSuccess and upserts data`() = runTest {
+  fun `getFetchData - valid response returns isSuccess and upserts data`() = runTest(testContext) {
     dataRule.server.enqueueFromFile(FETCH_SUCCESS)
     val result = fetchRepository.getFetchData()
 
@@ -67,7 +67,7 @@ class FetchRepositoryTest {
   }
 
   @Test
-  fun `getFetchData - error response returns isFailure and doesn't upsert`() = runTest {
+  fun `getFetchData - error response returns isFailure and doesn't upsert`() = runTest(testContext) {
     dataRule.server.enqueueHttpBadRequest()
     val result = fetchRepository.getFetchData()
 
@@ -77,7 +77,7 @@ class FetchRepositoryTest {
   }
 
   @Test
-  fun `selectFetchData - valid response flow emits expected list`() = runTest {
+  fun `selectFetchData - valid response flow emits expected list`() = runTest(testContext) {
     dataRule.server.enqueueFromFile(FETCH_SUCCESS)
     fetchRepository.getFetchData()
 
@@ -89,7 +89,7 @@ class FetchRepositoryTest {
   }
 
   @Test
-  fun `selectFetchData - error response flow emits empty list`() = runTest {
+  fun `selectFetchData - error response flow emits empty list`() = runTest(testContext) {
     dataRule.server.enqueueHttpBadRequest()
     fetchRepository.getFetchData()
 
