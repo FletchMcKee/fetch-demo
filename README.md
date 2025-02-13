@@ -1,8 +1,8 @@
 # Fetch Demo
 
-You will need to add the base url in your local.properties file with this syntax in order for this to build properly
+You will need to add the base url in your local.properties file with this syntax in order for this to build properly (Make sure it ends with the `/`).
 ```properties
-BASE_URL="https://your-url.com"
+BASE_URL="https://your-url.com/"
 ```
 
 - **UI**: Jetpack Compose
