@@ -8,7 +8,7 @@ sqliteDriver = "2.0.2"
 targetSdk = "35"
 minSdk = "26"
 
-agp = "8.8.0"
+agp = "8.8.1"
 kotlin = "2.1.10"
 ksp = "2.1.10-1.0.29"
 coreKtx = "1.15.0"
